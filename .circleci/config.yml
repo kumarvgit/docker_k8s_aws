@@ -1,6 +1,17 @@
 version: 2
 jobs:
-  build:
+  test:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: test code
+          command: |
+            docker build -t -t ${DOCKER_HUB_PASSWD}/docker_k8s_aws -f Dockerfile.dev .
+            docekr run -it ${DOCKER_HUB_PASSWD}/docker_k8s_aws npm start test
+  publish-latest:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -15,3 +26,13 @@ jobs:
           command: |
             echo "$DOCKER_HUB_SHADOW" | docker login -u "$DOCKER_HUB_PASSWD" --password-stdin
             docker push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      - publish-latest:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
