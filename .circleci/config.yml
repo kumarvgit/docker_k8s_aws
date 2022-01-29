@@ -11,7 +11,7 @@ jobs:
           command: |
             export CI=true
             docker build -t ${DOCKER_HUB_PASSWD}/docker_k8s_aws -f Dockerfile.dev .
-            docker run -it ${DOCKER_HUB_PASSWD}/docker_k8s_aws npm run test -- --coverage --watch=all
+            docker run -it ${DOCKER_HUB_PASSWD}/docker_k8s_aws npm run test -- --coverage --watchAll=false
   publish-latest:
     docker:
       - image: circleci/buildpack-deps:stretch
