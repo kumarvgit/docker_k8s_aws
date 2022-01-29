@@ -45,7 +45,5 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              echo "${DOCKER_HUB_SHADOW}" | docker login -u "{$DOCKER_HUB_PASSWD}" — password-stdin
-              docker push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
-            fi
+            echo "$DOCKER_HUB_PASSWD" | docker login -u "$DOCKER_HUB_SHADOW" --password-stdin
+            docker push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
