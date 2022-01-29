@@ -10,8 +10,27 @@ jobs:
           name: Build image
           command: |
             docker build -t ${DOCKER_HUB_PASSWD}/docker_k8s_aws .
-      - deploy:
-          name: Push application Docker image
+  publish-latest:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKER_HUB_SHADOW" | docker login -u "$DOCKER_HUB_PASSWD" --password-stdin
-            docker push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
+            ${DOCKER_HUB_PASSWD}/docker_k8s_aws
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
+      - publish-latest:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
