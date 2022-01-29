@@ -10,7 +10,7 @@ jobs:
           name: test code
           command: |
             docker build -t -t ${DOCKER_HUB_PASSWD}/docker_k8s_aws -f Dockerfile.dev .
-            docekr run -it ${DOCKER_HUB_PASSWD}/docker_k8s_aws npm start test
+            docekr run -it ${DOCKER_HUB_PASSWD}/docker_k8s_aws npm run test -- --coverage
   publish-latest:
     docker:
       - image: circleci/buildpack-deps:stretch
