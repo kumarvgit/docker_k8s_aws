@@ -6,7 +6,7 @@ jobs:
       - image: docker:17.05.0-ce-git
     steps:
       - checkout
-      - run
-        name: Build docker image
-        command: |
-          docker build .
+      - run:
+          name: Build docker image
+          command: |
+            docker build .
