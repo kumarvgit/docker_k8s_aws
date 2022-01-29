@@ -41,13 +41,11 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build .
-      # - deploy:
-      #     name: Push application Docker image
-      #     command: |
-      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #         login="$(aws ecr get-login)"
-      #         ${login}
-      #         docker tag app "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
-      #         docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
-      #       fi
+            docker build -t ${DOCKER_HUB_PASSWD}/docker_k8s_aws .
+      - deploy:
+          name: Push application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              echo "$DOCKER_HUB_SHADOW" | docker login -u “$DOCKER_HUB_PASSWD — password-stdin
+              docekr push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
+            fi
