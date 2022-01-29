@@ -47,5 +47,5 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               echo "$DOCKER_HUB_SHADOW" | docker login -u “$DOCKER_HUB_PASSWD — password-stdin
-              docekr push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
+              docker push ${DOCKER_HUB_PASSWD}/docker_k8s_aws
             fi
